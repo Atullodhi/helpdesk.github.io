@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Helping Desk</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Classic styling with metallic black theme */
+        :root {
+            --primary: #3a86ff;
+            --secondary: #2b2d42;
+            --accent: #ff9e00;
+            --metallic-black: linear-gradient(135deg, #2b2d42 0%, #1a1a2e 50%, #0d0d1a 100%);
+            --metal-effect: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, 
+                                           rgba(255,255,255,0.05) 50%, 
+                                           rgba(0,0,0,0.1) 50%, 
+                                           rgba(0,0,0,0.2) 100%);
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--metallic-black);
+            background-attachment: fixed;
+            color: #e2e2e2;
+        }
+        
+        .nav-brand {
+            font-family: 'Palatino Linotype', 'Book Antiqua', serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: var(--accent);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .classic-card {
+            background: rgba(43, 45, 66, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .classic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--metal-effect);
+            pointer-events: none;
+        }
+        
+        .btn-classic {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-classic:hover {
+            background: #2667cc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .btn-classic-secondary {
+            background: var(--secondary);
+        }
+        
+        .btn-classic-secondary:hover {
+            background: #232539;
+        }
+        
+        .stage-pending {
+            background-color: rgba(254, 240, 138, 0.2);
+            color: #fef08a;
+            border: 1px solid #fef08a;
+        }
+        
+        .stage-seen {
+            background-color: rgba(147, 197, 253, 0.2);
+            color: #93c5fd;
+            border: 1px solid #93c5fd;
+        }
+        
+        .stage-progress {
+            background-color: rgba(165, 180, 252, 0.2);
+            color: #a5b4fc;
+            border: 1px solid #a5b4fc;
+        }
+        
+        .stage-resolved {
+            background-color: rgba(134, 239, 172, 0.2);
+            color: #86efac;
+            border: 1px solid #86efac;
+        }
+        
+        /* Slideshow */
+        .slideshow {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-content {
+            background: rgba(43, 45, 66, 0.85);
+            padding: 30px;
+            border-radius: 5px;
+            max-width: 600px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .slide-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .slide-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        /* Classic form elements */
+        input, textarea, select {
+            background: rgba(43, 45, 66, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e2e2;
+            border-radius: 4px;
+            padding: 10px 15px;
+            width: 100%;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.3);
+            background: rgba(43, 45, 66, 0.7);
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .modal-content {
+            background: var(--metallic-black);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Toast */
+        .toast {
+            background: rgba(43, 45, 66, 0.95);
+            border: 1px solid rgba(58, 134, 255, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-black bg-opacity-90 py-4 px-6 border-b border-gray-800">
+        <div class="container mx-auto flex justify-between items-center">
+            <span class="nav-brand text-white" style="text-transform: uppercase; text-shadow: 0 0 8px rgba(255,255,255,0.5);">OUR HELPING DESK</span>
+            <div class="flex items-center space-x-4">
+                <div id="user-greeting" class="hidden md:block"></div>
+                <button id="logout-btn" class="btn-classic btn-classic-secondary hidden">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </button>
+                <button id="login-btn" class="bg-transparent text-white hover:text-gray-300 text-2xl">
+                    <i class="fas fa-sign-in-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Slideshow -->
+    <div class="slideshow">
+        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c7b31031-c0e4-4269-8e51-4590fdb965fd.png');">
+            <div class="slide-content">
+                <h2 class="text-3xl font-bold mb-4 text-white">Welcome to Our Helping Desk</h2>
+                <p class="text-lg mb-6">Your premier destination for comprehensive technical support and customer service solutions.</p>
+                <button class="btn-classic scroll-to-form">
+                    <i class="fas fa-headset mr-2"></i>Submit Your Complaint
+                </button>
+            </div>
+        </div>
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/382184b3-4678-418a-8fa9-275abc4465b7.png');">
+            <div class="slide-content">
+                <h2 class="text-3xl font-bold mb-4 text-white">24/7 Support Services</h2>
+                <p class="text-lg mb-6">Our expert team is available round the clock to address your concerns and resolve issues promptly.</p>
+                <button class="btn-classic scroll-to-form">
+                    <i class="fas fa-clock mr-2"></i>Get Help Now
+                </button>
+            </div>
+        </div>
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5e133e02-cf67-461f-b9e1-3c6214e0a3dd.png');">
+            <div class="slide-content">
+                <h2 class="text-3xl font-bold mb-4 text-white">Real-Time Complaint Tracking</h2>
+                <p class="text-lg mb-6">Monitor your complaint status through every stage of resolution with our transparent tracking system.</p>
+                <button class="btn-classic scroll-to-track">
+                    <i class="fas fa-search mr-2"></i>Track Complaint
+                </button>
+            </div>
+        </div>
+        <div class="slide-nav">
+            <div class="slide-dot active" data-slide="0"></div>
+            <div class="slide-dot" data-slide="1"></div>
+            <div class="slide-dot" data-slide="2"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Complaint Sections -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <!-- User Complaint Form -->
+            <div id="complaint-form" class="classic-card p-6">
+                <h2 class="text-2xl font-bold mb-6 pb-3 border-b border-gray-700 text-white">
+                    <i class="fas fa-paper-plane mr-2"></i>Submit New Complaint
+                </h2>
+                <form id="new-complaint-form">
+                    <div class="mb-4">
+                        <label for="name" class="block text-gray-300 mb-2">Your Name</label>
+                        <input type="text" id="name" class="w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-300 mb-2">Email Address</label>
+                        <input type="email" id="email" class="w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="department" class="block text-gray-300 mb-2">Department</label>
+                        <select id="department" class="w-full">
+                            <option value="technical">Technical Support</option>
+                            <option value="billing">Billing Department</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="feedback">Feedback/Suggestions</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="complaint" class="block text-gray-300 mb-2">Complaint Details</label>
+                        <textarea id="complaint" rows="5" class="w-full" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-classic w-full">
+                        <i class="fas fa-paper-plane mr-2"></i>Submit Complaint
+                    </button>
+                </form>
+            </div>
+
+            <!-- Complaint Status Section -->
+            <div id="complaint-status" class="classic-card p-6">
+                <h2 class="text-2xl font-bold mb-6 pb-3 border-b border-gray-700 text-white">
+                    <i class="fas fa-search mr-2"></i>Track Your Complaint
+                </h2>
+                <div class="mb-4">
+                    <label for="tracking-id" class="block text-gray-300 mb-2">Enter Complaint ID</label>
+                    <div class="flex">
+                        <input type="text" id="tracking-id" class="flex-1 rounded-r-none" placeholder="e.g. COMP12345">
+                        <button id="track-btn" class="btn-classic rounded-l-none">
+                            <i class="fas fa-search mr-2"></i>Track
+                        </button>
+                    </div>
+                </div>
+                <div id="complaint-details" class="hidden">
+                    <div class="classic-card p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-semibold text-lg text-white" id="complaint-title">Complaint #COMP12345</h3>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium" id="complaint-status-badge">Pending</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <p class="text-gray-400">Submitted by: <span class="text-white" id="complainant-name">John Doe</span></p>
+                                <p class="text-gray-400">Department: <span class="text-white" id="complaint-dept">Technical Support</span></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-400">Date: <span class="text-white" id="complaint-date">2023-05-15</span></p>
+                                <p class="text-gray-400">Email: <span class="text-white" id="complainant-email">john@example.com</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-900 bg-opacity-50 p-4 rounded-md mb-4">
+                            <h4 class="font-medium text-white mb-2">Complaint Description</h4>
+                            <p class="text-gray-300" id="complaint-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</p>
+                        </div>
+                        
+                        <!-- Status Timeline -->
+                        <div class="mt-6">
+                            <h4 class="font-medium text-white mb-4">Status Updates</h4>
+                            <div class="timeline">
+                                <div class="timeline-item mb-6">
+                                    <h5 class="font-medium text-white">Resolved</h5>
+                                    <p class="text-sm text-gray-400">May 18, 2023, 10:30 AM</p>
+                                    <p class="text-sm text-gray-300 mt-1" id="resolution-notes">The issue has been successfully resolved. Please let us know if you need any further assistance.</p>
+                                </div>
+                                
+                                <div class="timeline-item mb-6">
+                                    <h5 class="font-medium text-white">In Progress</h5>
+                                    <p class="text-sm text-gray-400">May 17, 2023, 2:15 PM</p>
+                                    <p class="text-sm text-gray-300 mt-1">Our team is currently working on resolving your issue.</p>
+                                </div>
+                                
+                                <div class="timeline-item mb-6">
+                                    <h5 class="font-medium text-white">Seen</h5>
+                                    <p class="text-sm text-gray-400">May 16, 2023, 9:00 AM</p>
+                                    <p class="text-sm text-gray-300 mt-1">Your complaint has been reviewed by our support team.</p>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <h5 class="font-medium text-white">Submitted</h5>
+                                    <p class="text-sm text-gray-400">May 15, 2023, 3:30 PM</p>
+                                    <p class="text-sm text-gray-300 mt-1">Your complaint has been received successfully.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel (Hidden by Default) -->
+        <div id="admin-panel" class="hidden classic-card p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-6 pb-3 border-b border-gray-700 text-white">
+                <i class="fas fa-user-shield mr-2"></i>Admin Dashboard
+            </h2>
+            
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="classic-card p-4">
+                    <h3 class="font-semibold text-gray-300 mb-2">Total Complaints</h3>
+                    <p class="text-3xl font-bold text-primary-400" id="total-complaints">24</p>
+                </div>
+                <div class="classic-card p-4">
+                    <h3 class="font-semibold text-gray-300 mb-2">Pending Review</h3>
+                    <p class="text-3xl font-bold text-yellow-400" id="pending-complaints">5</p>
+                </div>
+                <div class="classic-card p-4">
+                    <h3 class="font-semibold text-gray-300 mb-2">In Progress</h3>
+                    <p class="text-3xl font-bold text-purple-400" id="progress-complaints">8</p>
+                </div>
+                <div class="classic-card p-4">
+                    <h3 class="font-semibold text-gray-300 mb-2">Resolved</h3>
+                    <p class="text-3xl font-bold text-green-400" id="resolved-complaints">11</p>
+                </div>
+            </div>
+            
+            <!-- Complaint Management -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-white">Complaint Management</h3>
+                    <div class="flex space-x-2">
+                        <button id="refresh-complaints" class="btn-classic-secondary">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                        <select id="complaint-filter" class="bg-gray-900 border-gray-700 text-white">
+                            <option value="all">All Complaints</option>
+                            <option value="pending">Pending Review</option>
+                            <option value="seen">Seen</option>
+                            <option value="progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="complaints-container" class="space-y-4">
+                    <!-- Complaint cards will be dynamically added here -->
+                </div>
+            </div>
+            
+            <!-- Admin Actions -->
+            <div class="border-t border-gray-700 pt-6">
+                <h3 class="text-xl font-semibold mb-4 text-white">Quick Actions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button class="admin-action-btn classic-card p-4 text-left hover:bg-gray-800 transition" data-action="notify">
+                        <i class="fas fa-bell mr-2 text-blue-400"></i>
+                        <span>Send Status Notifications</span>
+                    </button>
+                    <button class="admin-action-btn classic-card p-4 text-left hover:bg-gray-800 transition" data-action="report">
+                        <i class="fas fa-file-alt mr-2 text-green-400"></i>
+                        <span>Generate Monthly Report</span>
+                    </button>
+                    <button class="admin-action-btn classic-card p-4 text-left hover:bg-gray-800 transition" data-action="settings">
+                        <i class="fas fa-cog mr-2 text-purple-400"></i>
+                        <span>System Settings</span>
+                    </button>
+                    <button class="admin-action-btn classic-card p-4 text-left hover:bg-gray-800 transition" data-action="logout">
+                        <i class="fas fa-sign-out-alt mr-2 text-red-400"></i>
+                        <span>Admin Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black bg-opacity-90 text-gray-400 py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Our Helping Desk</h4>
+                    <p class="mb-4">Providing exceptional support services with a commitment to excellence and customer satisfaction.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white">Home</a></li>
+                        <li><a href="#" class="hover:text-white">Submit Complaint</a></li>
+                        <li><a href="#" class="hover:text-white">Track Status</a></li>
+                        <li><a href="#" class="hover:text-white">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Departments</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white">Technical Support</a></li>
+                        <li><a href="#" class="hover:text-white">Billing Department</a></li>
+                        <li><a href="#" class="hover:text-white">General Inquiry</a></li>
+                        <li><a href="#" class="hover:text-white">Feedback</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Contact Us</h4>
+                    <address class="not-italic">
+                        <p class="mb-2"><i class="fas fa-map-marker-alt mr-2"></i> 123 Support Street, Tech City</p>
+                        <p class="mb-2"><i class="fas fa-phone mr-2"></i> +1 (800) 123-4567</p>
+                        <p class="mb-2"><i class="fas fa-envelope mr-2"></i> support@ourhelpingdesk.com</p>
+                        <p><i class="fas fa-clock mr-2"></i> 24/7 Support Available</p>
+                    </address>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center">
+                <p>&copy; 2023 Our Helping Desk. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Admin Complaint Edit -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center hidden z-50 modal-overlay">
+        <div class="modal-content rounded-lg p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-white">Update Complaint Status</h3>
+                <button id="close-modal" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <form id="edit-complaint-form">
+                <input type="hidden" id="edit-complaint-id">
+                <div class="mb-4">
+                    <label for="edit-status" class="block text-gray-300 mb-2">Status</label>
+                    <select id="edit-status" class="w-full">
+                        <option value="pending">Pending (Newly Submitted)</option>
+                        <option value="seen">Seen (Under Review)</option>
+                        <option value="progress">In Progress (Working on Solution)</option>
+                        <option value="resolved">Resolved (Issue Solved)</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="edit-notes" class="block text-gray-300 mb-2">Admin Notes</label>
+                    <textarea id="edit-notes" rows="4" class="w-full"></textarea>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-edit" class="btn-classic-secondary">Cancel</button>
+                    <button type="submit" class="btn-classic">
+                        <i class="fas fa-save mr-2"></i>Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-4 right-4 toast rounded-md shadow-lg hidden px-6 py-3">
+        <div class="flex items-center">
+            <span id="toast-message" class="text-white">Action completed successfully</span>
+            <button id="close-toast" class="ml-4 text-gray-300 hover:text-white">&times;</button>
+        </div>
+    </div>
+
+    <script>
+        // Slideshow functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slide-dot');
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        // Auto-advance slides every 5 seconds
+        let slideInterval = setInterval(nextSlide, 5000);
+        
+        // Click handlers for dots
+        dots.forEach(dot => {
+            dot.addEventListener('click', function() {
+                clearInterval(slideInterval);
+                showSlide(parseInt(this.getAttribute('data-slide')));
+                slideInterval = setInterval(nextSlide, 5000);
+            });
+        });
+        
+        // Scroll to form/track buttons
+        document.querySelectorAll('.scroll-to-form').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('complaint-form').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+        
+        document.querySelectorAll('.scroll-to-track').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('complaint-status').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+        
+        // Sample data storage
+        let complaints = [
+            {
+                id: 'COMP' + Math.floor(Math.random() * 100000),
+                name: 'John Doe',
+                email: 'john@example.com',
+                department: 'technical',
+                complaint: 'My internet connection keeps dropping every few minutes. This has been happening for 3 days now.',
+                status: 'resolved',
+                date: new Date('2023-05-10').toISOString(),
+                updates: [
+                    { status: 'pending', date: new Date('2023-05-10T10:30:00'), notes: 'Complaint received' },
+                    { status: 'seen', date: new Date('2023-05-10T14:15:00'), notes: 'Assigned to technical team' },
+                    { status: 'progress', date: new Date('2023-05-11T09:00:00'), notes: 'Diagnosing connection issue' },
+                    { status: 'resolved', date: new Date('2023-05-12T16:45:00'), notes: 'Replaced faulty router. Issue resolved.' }
+                ]
+            },
+            {
+                id: 'COMP' + Math.floor(Math.random() * 100000),
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                department: 'billing',
+                complaint: 'I was charged twice for my subscription renewal this month.',
+                status: 'progress',
+                date: new Date('2023-05-15').toISOString(),
+                updates: [
+                    { status: 'pending', date: new Date('2023-05-15T11:20:00'), notes: 'Complaint received' },
+                    { status: 'seen', date: new Date('2023-05-16T10:00:00'), notes: 'Under review by billing department' },
+                    { status: 'progress', date: new Date('2023-05-16T14:30:00'), notes: 'Processing refund request' }
+                ]
+            },
+            {
+                id: 'COMP' + Math.floor(Math.random() * 100000),
+                name: 'Robert Johnson',
+                email: 'robert@example.com',
+                department: 'general',
+                complaint: 'I need help setting up my new device with your service.',
+                status: 'seen',
+                date: new Date('2023-05-17').toISOString(),
+                updates: [
+                    { status: 'pending', date: new Date('2023-05-17T13:45:00'), notes: 'Complaint received' },
+                    { status: 'seen', date: new Date('2023-05-17T16:15:00'), notes: 'Assigned to support specialist' }
+                ]
+            },
+            {
+                id: 'COMP' + Math.floor(Math.random() * 100000),
+                name: 'Sarah Williams',
+                email: 'sarah@example.com',
+                department: 'feedback',
+                complaint: 'The mobile app needs a dark mode option.',
+                status: 'pending',
+                date: new Date('2023-05-18').toISOString(),
+                updates: [
+                    { status: 'pending', date: new Date('2023-05-18T09:10:00'), notes: 'Complaint received' }
+                ]
+            }
+        ];
+
+        let isAdminLoggedIn = false;
+        let currentComplaintId = null;
+
+        // DOM Elements
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const adminPanel = document.getElementById('admin-panel');
+        const complaintForm = document.getElementById('new-complaint-form');
+        const complaintDetails = document.getElementById('complaint-details');
+        const complaintsContainer = document.getElementById('complaints-container');
+        const editModal = document.getElementById('edit-modal');
+        const editForm = document.getElementById('edit-complaint-form');
+        const toast = document.getElementById('toast');
+        const refreshBtn = document.getElementById('refresh-complaints');
+        const filterSelect = document.getElementById('complaint-filter');
+        const userGreeting = document.getElementById('user-greeting');
+        const trackBtn = document.getElementById('track-btn');
+        const trackingIdInput = document.getElementById('tracking-id');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+            renderComplaintCards('all');
+            
+            // Check for admin in localStorage
+            if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+                toggleAdminPanel(true);
+            }
+        });
+
+        // Event Listeners
+        loginBtn.addEventListener('click', () => {
+            // In a real app, this would be a proper auth flow
+            const username = prompt('Enter username:');
+            const password = prompt('Enter password:');
+            if (username === 'admin' && password === 'admin') {
+                localStorage.setItem('isAdminLoggedIn', 'true');
+                toggleAdminPanel(true);
+                showToast('Admin dashboard unlocked');
+            } else {
+                alert('Incorrect password');
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('isAdminLoggedIn');
+            toggleAdminPanel(false);
+            showToast('Logged out successfully');
+        });
+
+        refreshBtn.addEventListener('click', () => {
+            const filter = filterSelect.value;
+            renderComplaintCards(filter);
+            showToast('Complaints refreshed');
+        });
+
+        filterSelect.addEventListener('change', () => {
+            renderComplaintCards(filterSelect.value);
+        });
+
+        trackBtn.addEventListener('click', () => {
+            const trackingId = trackingIdInput.value.trim().toUpperCase();
+            if (!trackingId) {
+                alert('Please enter a complaint ID');
+                return;
+            }
+
+            const complaint = complaints.find(c => c.id === trackingId);
+            if (complaint) {
+                displayComplaintDetails(complaint);
+            } else {
+                alert('Complaint not found. Please check the ID and try again.');
+            }
+        });
+
+        complaintForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const department = document.getElementById('department').value;
+            const complaintText = document.getElementById('complaint').value;
+            
+            const newComplaint = {
+                id: 'COMP' + Math.floor(Math.random() * 100000),
+                name,
+                email,
+                department,
+                complaint: complaintText,
+                status: 'pending',
+                date: new Date().toISOString(),
+                updates: [
+                    { status: 'pending', date: new Date().toISOString(), notes: 'Complaint received' }
+                ]
+            };
+            
+            complaints.push(newComplaint);
+            updateStats();
+            renderComplaintCards('all');
+            
+            // Show the complaint ID to the user
+            showToast(`Complaint submitted successfully! ID: ${newComplaint.id}`);
+            
+            // Reset form
+            complaintForm.reset();
+        });
+
+        document.getElementById('close-modal').addEventListener('click', () => {
+            editModal.classList.add('hidden');
+        });
+
+        document.getElementById('cancel-edit').addEventListener('click', () => {
+            editModal.classList.add('hidden');
+        });
+
+        document.getElementById('close-toast').addEventListener('click', () => {
+            toast.classList.add('hidden');
+        });
+
+        editForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const status = document.getElementById('edit-status').value;
+            const notes = document.getElementById('edit-notes').value;
+            
+            const complaintIndex = complaints.findIndex(c => c.id === currentComplaintId);
+            if (complaintIndex !== -1) {
+                complaints[complaintIndex].status = status;
+                
+                // Add update if not already present
+                const hasUpdate = complaints[complaintIndex].updates.some(u => u.status === status);
+                if (!hasUpdate) {
+                    complaints[complaintIndex].updates.unshift({
+                        status,
+                        date: new Date().toISOString(),
+                        notes: notes || `Status changed to ${status}`
+                    });
+                }
+                
+                // If resolved and notes were provided, add resolution notes
+                if (status === 'resolved' && notes) {
+                    complaints[complaintIndex].resolutionNotes = notes;
+                }
+                
+                updateStats();
+                renderComplaintCards(filterSelect.value);
+                editModal.classList.add('hidden');
+                showToast('Complaint updated successfully');
+                
+                // If showing this complaint in user view, update it
+                if (complaintDetails.classList.contains('block') && 
+                    document.getElementById('complaint-title').textContent.includes(currentComplaintId)) {
+                    displayComplaintDetails(complaints[complaintIndex]);
+                }
+            }
+        });
+
+        // Admin action buttons
+        document.querySelectorAll('.admin-action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                if (action === 'logout') {
+                    localStorage.removeItem('isAdminLoggedIn');
+                    toggleAdminPanel(false);
+                    showToast('Logged out successfully');
+                } else {
+                    // In a real app, these would perform actual actions
+                    showToast(`Action: ${action} (simulated in demo)`);
+                }
+            });
+        });
+
+        // Functions
+        function toggleAdminPanel(show) {
+            isAdminLoggedIn = show;
+            
+            if (show) {
+                adminPanel.classList.remove('hidden');
+                logoutBtn.classList.remove('hidden');
+                loginBtn.classList.add('hidden');
+                userGreeting.textContent = 'Welcome, Admin';
+                userGreeting.classList.remove('hidden');
+            } else {
+                adminPanel.classList.add('hidden');
+                logoutBtn.classList.add('hidden');
+                loginBtn.classList.remove('hidden');
+                userGreeting.classList.add('hidden');
+            }
+        }
+
+        function updateStats() {
+            const total = complaints.length;
+            const pending = complaints.filter(c => c.status === 'pending').length;
+            const seen = complaints.filter(c => c.status === 'seen').length;
+            const progress = complaints.filter(c => c.status === 'progress').length;
+            const resolved = complaints.filter(c => c.status === 'resolved').length;
+            
+            document.getElementById('total-complaints').textContent = total;
+            document.getElementById('pending-complaints').textContent = pending;
+            document.getElementById('progress-complaints').textContent = progress;
+            document.getElementById('resolved-complaints').textContent = resolved;
+        }
+
+        function renderComplaintCards(filter) {
+            complaintsContainer.innerHTML = '';
+            
+            let filteredComplaints = complaints;
+            if (filter !== 'all') {
+                filteredComplaints = complaints.filter(c => c.status === filter);
+            }
+            
+            // Sort by date (newest first)
+            filteredComplaints.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            filteredComplaints.forEach(complaint => {
+                const card = document.createElement('div');
+                card.className = 'classic-card p-4 hover:bg-gray-800 transition cursor-pointer';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h4 class="font-semibold text-white">${complaint.id}</h4>
+                            <p class="text-sm text-gray-400">${complaint.name} • ${formatDate(complaint.date)}</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium ${getStatusClass(complaint.status)}">
+                            ${getStatusText(complaint.status)}
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-gray-300 line-clamp-2">${complaint.complaint}</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-400">${getDepartmentName(complaint.department)}</span>
+                        <button class="edit-complaint-btn text-blue-400 text-sm font-medium hover:text-blue-300" data-id="${complaint.id}">
+                            <i class="fas fa-edit mr-1"></i>View/Edit
+                        </button>
+                    </div>
+                `;
+                complaintsContainer.appendChild(card);
+            });
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-complaint-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const complaintId = this.getAttribute('data-id');
+                    openEditModal(complaintId);
+                });
+            });
+        }
+
+        function openEditModal(complaintId) {
+            currentComplaintId = complaintId;
+            const complaint = complaints.find(c => c.id === complaintId);
+            
+            if (complaint) {
+                document.getElementById('edit-complaint-id').value = complaint.id;
+                document.getElementById('edit-status').value = complaint.status;
+                document.getElementById('edit-notes').value = '';
+                
+                editModal.classList.remove('hidden');
+            }
+        }
+
+        function displayComplaintDetails(complaint) {
+            document.getElementById('complaint-title').textContent = `Complaint ${complaint.id}`;
+            document.getElementById('complaint-status-badge').textContent = getStatusText(complaint.status);
+            document.getElementById('complaint-status-badge').className = `px-3 py-1 rounded-full text-sm font-medium ${getStatusClass(complaint.status)}`;
+            document.getElementById('complainant-name').textContent = complaint.name;
+            document.getElementById('complaint-dept').textContent = getDepartmentName(complaint.department);
+            document.getElementById('complaint-date').textContent = formatDate(complaint.date);
+            document.getElementById('complainant-email').textContent = complaint.email;
+            document.getElementById('complaint-description').textContent = complaint.complaint;
+            
+            // Generate timeline
+            const timelineContainer = document.querySelector('.timeline');
+            timelineContainer.innerHTML = '';
+            
+            complaint.updates.forEach(update => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item mb-6';
+                item.innerHTML = `
+                    <h5 class="font-medium text-white">${getStatusText(update.status)}</h5>
+                    <p class="text-sm text-gray-400">${formatDate(update.date)}</p>
+                    <p class="text-sm text-gray-300 mt-1">${update.notes}</p>
+                `;
+                timelineContainer.appendChild(item);
+            });
+            
+            complaintDetails.classList.remove('hidden');
+        }
+
+        function showToast(message) {
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending': return 'Pending';
+                case 'seen': return 'Seen';
+                case 'progress': return 'In Progress';
+                case 'resolved': return 'Resolved';
+                default: return status;
+            }
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'pending': return 'stage-pending';
+                case 'seen': return 'stage-seen';
+                case 'progress': return 'stage-progress';
+                case 'resolved': return 'stage-resolved';
+                default: return '';
+            }
+        }
+
+        function getDepartmentName(dept) {
+            switch(dept) {
+                case 'technical': return 'Technical Support';
+                case 'billing': return 'Billing Department';
+                case 'general': return 'General Inquiry';
+                case 'feedback': return 'Feedback/Suggestions';
+                default: return dept;
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+    </script>
+</body>
+</html>
