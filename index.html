@@ -233,6 +233,26 @@
             background: rgba(43, 45, 66, 0.95);
             border: 1px solid rgba(58, 134, 255, 0.5);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        .thank-you {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .thank-you ul {
+            list-style-type: none;
+            padding: 0;
+            display: inline-block;
+            text-align: left;
+        }
+        .thank-you li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .thank-you li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
         }
     </style>
 </head>
@@ -503,18 +523,26 @@
                 <div>
                     <h4 class="text-lg font-semibold text-white mb-4">Contact Us</h4>
                     <address class="not-italic">
-                        <p class="mb-2"><i class="fas fa-map-marker-alt mr-2"></i> 123 Support Street, Tech City</p>
+                        <p class="mb-2"><i class="fas fa-map-marker-alt mr-2"></i> Bhopal, Madhya Pradesh</p>
                         <p class="mb-2"><i class="fas fa-phone mr-2"></i> +1 (800) 123-4567</p>
                         <p class="mb-2"><i class="fas fa-envelope mr-2"></i> support@ourhelpingdesk.com</p>
-                        <p><i class="fas fa-clock mr-2"></i> 24/7 Support Available</p>
+                        <p><i class="fab fa-instagram mr-2"></i> @__.empty.heart</p>
+                        <p><i class="fas fa-envelope mr-2"></i> atullodhi.9068@gmail.com</p>
                     </address>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-6 text-center">
-                <p>&copy; 2023 Our Helping Desk. All rights reserved.</p>
+                <p>&copy; 2025-26 Our Helping Desk. All rights reserved.<br>Owner: Atul Lodhi</p>
             </div>
         </div>
     </footer>
+    <div class="thank-you">
+        <ul>
+            <li>Thank you for choosing Our Helping Desk</li>
+            <li>Your satisfaction is our priority</li>
+            <li>We appreciate your trust in us</li>
+        </ul>
+    </div>
 
     <!-- Modal for Admin Complaint Edit -->
     <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center hidden z-50 modal-overlay">
